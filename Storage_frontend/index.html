@@ -1,0 +1,81 @@
+<html>
+    <div>
+        <button onclick="getAllProduct()">Get Products</button>
+        <div class="products">
+        </div>
+    </div>
+    <hr>    
+    <div>
+        <form class="add_product" method="POST" action="http://127.0.0.1:5000/addProduct">
+            <div class="form-group">
+                <label for="sku">SKU: </label>
+                <input id="sku" name="sku">
+            </div>
+            <div class="form-group">
+                <label for="product_name">Product Name: </label>
+                <input id="product_name" name="product_name">
+            </div>
+            <div class="form-group">
+                <label for="shelf">Shelf: </label>
+                <input id="shelf" name="shelf">
+            </div>
+            <div class="form-group">
+                <label for="quantity">Quantity: </label>
+                <input id="quantity" name="quantity">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</html>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    function getAllProduct(){
+        $.ajax({
+          type: 'GET',
+          url: "http://127.0.0.1:5000/fetchAllProducts",
+          dataType: 'json',
+          headers: {
+              'Access-Control-Allow-Origin':'http://localhost:5000'
+          }, 
+          success: function(products) {
+            var html = "";
+            if (products.length > 0) {
+                html = "<ul>";
+                $.each(products, function(i, a){
+                    html+="<li> Product SKU: " + a.sku + "</a></li>";
+                    html+="<li> Product Name: " + a.prod_name + "</a></li>";
+                    html+="<li> Shelf Location: " + a.shelf + "</a></li>";
+                    html+="<li> Quatity: " + a.quantity + "</a></li>";
+                });
+                html += "</ul><hr>";
+            }
+            $('.products').html(html);
+          },
+          error: function(e) {
+              console.log(e);
+          } 
+        });
+    }
+</script>
+<style>
+    /* Style the submit button */
+    button, input[type=submit] {
+        width: 100%;
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    /* Add a background color to the submit button on mouse-over */
+    button, input[type=submit]:hover {
+        background-color: #45a049;
+    }
+</style>
